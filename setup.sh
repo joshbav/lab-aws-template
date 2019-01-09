@@ -10,7 +10,7 @@ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/dock
 
 echo
 echo INSTALL DOCKER
-sudo systemctl enable docker && sudo systemctl start docker && sudo usermod -aG docker centos && sudo docker run hello-world
+sudo yum install -y docker-ce-18.09.1-3.el7systemctl enable docker && sudo systemctl start docker && sudo usermod -aG docker centos && sudo docker run hello-world
 
 
 
