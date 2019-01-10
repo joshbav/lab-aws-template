@@ -12,7 +12,7 @@ echo
 sudo yum install -y epel-release yum-utils
 sudo yum install -y \ 
 ansible \
-autofs\
+autofs \
 bind-utils \ 
 bzip2 \
 ca-certificates \
