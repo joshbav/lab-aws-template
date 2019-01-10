@@ -1,0 +1,6 @@
+[Unit]
+Description=shutdown-timer.timer runs this unit after 6 hours, to issue the shutdown command, in order to limit our AWS bill
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/shutdown -h 20 "system shutting down in 20 minutes"
