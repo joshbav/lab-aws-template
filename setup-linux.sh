@@ -2,7 +2,55 @@
 echo
 echo YUM INSTALL OF ALL MY PACKAGES BUT DOCKER
 echo
-sudo yum install -y bind-utils which gawk curl gettext host iproute util-linux sed autofs nano ftp jq wget expect net-tools traceroute yum-utils device-mapper-persistent-data lvm2 which tar xz unzip curl ipset 
+# Much of this is in a base CentOS & RHEL install, but not necessarily in a container
+sudo yum install -y epel-release
+sudo yum install -y \ 
+ansible \
+autofs\
+bind-utils \ 
+bzip2 \
+ca-certificates \
+cpio \
+curl \
+device-mapper-persistent-data \
+diffutils \
+ethtool \
+expect \
+findutils \
+ftp \
+gawk \
+grep \
+gettext \
+git \
+gzip \
+hardlink \
+hostname \
+info \
+iproute \
+ipset \
+iputils \
+jq \
+less \
+lua \
+lvm2 \
+make \
+nano \
+net-tools \
+nfs-utils \
+openssh \
+passwd \
+rsync \
+sed \
+sudo \
+tar \
+traceroute \
+unzip \
+util-linux \
+vim \
+wget \
+which \
+xz \
+yum-utils    
 
 echo
 echo INSTALLING DOCKER CE 18.09.1
