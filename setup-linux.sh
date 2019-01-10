@@ -1,9 +1,15 @@
 #! /bin/bash
 echo
+echo SETTING SOME ENV VARIABLES FOR ALL USERS
+sudo echo LANG=en_US.UTF-8 >> /etc/environment
+sudo echo LANGUAGE=en_US:en >> /etc/environment
+sudo echo LC_ALL=en_US.UTF-8 >> /etc/environment
+
+echo
 echo YUM INSTALL OF ALL MY PACKAGES BUT DOCKER
 echo
 # Much of this is in a base CentOS & RHEL install, but not necessarily in a container
-sudo yum install -y epel-release
+sudo yum install -y epel-release yum-utils
 sudo yum install -y \ 
 ansible \
 autofs\
@@ -34,23 +40,44 @@ less \
 lua \
 lvm2 \
 make \
+man \
 nano \
 net-tools \
 nfs-utils \
-openssh \
+nmap \
+openssh-client \
 passwd \
 rsync \
 sed \
 sudo \
 tar \
+tcping \
 traceroute \
 unzip \
 util-linux \
 vim \
 wget \
 which \
-xz \
-yum-utils    
+xz     
+
+#### PYTHON 3.6
+#sudo yum install -y python36-setuptools
+## note pip is already included python36-pip
+#easy_install-3.6 pip
+#pip3 -v
+#pip3 install --upgrade pip
+#pip3 install virtualenv
+####
+
+#### JAVA 1.8
+# sudo yum install -y java-1.8.0-openjdk-headless
+# java -version
+## Verify this is the right version
+#ENV JAVA_VERSION 8u181
+## need to add env vars in app definition such as java_args
+## note, use: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+## https://dzone.com/articles/running-a-jvm-in-a-container-without-getting-kille
+####
 
 echo
 echo INSTALLING DOCKER CE 18.09.1
@@ -61,6 +88,8 @@ sudo systemctl enable docker
 sudo systemctl start docker 
 sudo usermod -aG docker centos 
 sudo docker run hello-world
+
+#### yum clean all
 
 echo
 echo DONE
