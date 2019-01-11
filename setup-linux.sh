@@ -16,6 +16,7 @@ sudo yum install -y ansible autofs bash-completion bind-utils bzip2 ca-certifica
 echo
 echo INSTALLING ONESHOT SYSTEMD UNIT FOR INSTALLING KERNEL HEADERS ON STARTUP
 echo
+# So anytime the kernel is updated, on reboot the headers are installed
 sudo curl -o /etc/systemd/system/install-kernel-headers.service -sSl https://raw.githubusercontent.com/joshbav/lab-aws-template/master/install-kernel-headers.service
 sudo systemctl daemon-reload
 sudo systemctl enable install-kernel-headers.service
