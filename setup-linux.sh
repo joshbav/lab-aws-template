@@ -9,8 +9,12 @@ echo
 echo YUM INSTALL OF MY MAIN PACKAGES
 echo
 # Much of this is in a base CentOS & RHEL install, but not necessarily in a container
-sudo yum install -y epel-release yum-utils
+sudo yum install -y epel-release yum-utils deltarpm
+sudo yum update -y
 sudo yum install -y ansible autofs bash-completion bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
+
+echo INSTALLING ONESHOT SYSTEMD UNIT FOR INSTALLING KERNEL HEADERS ON STARTUP
+sudo curl -o /etc/systemd/system/install-kernel-headers.service -sSl  
 
 echo
 echo INSTALLING DOCKER CE 18.09.1

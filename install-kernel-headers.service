@@ -1,0 +1,25 @@
+# Revision 1-11-19
+# This is a custom systemd unit that is ran only once on startup. 
+# It installs the kernel headers. 
+# This allows for a kernel upgrade to happen, then when it reboots after this 
+#  oneshot systemd unit is ran, and the matching kernel headers are installed.
+#
+[Unit]
+Description=Installs Kernel headers automatically (by Sysdig)
+Requires=network-online.target
+After=network-online.target
+Before=dragent.service
+
+[Service]
+Type=oneshot
+StandardOutput=journal+console
+StandardError=journal+console
+EnvironmentFile=
+# Note systemd starts executables as root by default, thus no use of sudo below
+ExecStartPre=
+ExecStart=/usr/bin/bash -c "/usr/bin/yum install -y kernel-devel-$(uname -r)"
+# Note ExecStopPost entries are ran regardless of the outcome of ExecStartPre and ExecStart commands
+ExecStopPost=
+
+[Install]
+WantedBy=multi-user.target
