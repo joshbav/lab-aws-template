@@ -13,8 +13,12 @@ sudo yum install -y epel-release yum-utils deltarpm
 sudo yum update -y
 sudo yum install -y ansible autofs bash-completion bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
 
+echo
 echo INSTALLING ONESHOT SYSTEMD UNIT FOR INSTALLING KERNEL HEADERS ON STARTUP
-sudo curl -o /etc/systemd/system/install-kernel-headers.service -sSl  
+echo
+sudo curl -o /etc/systemd/system/install-kernel-headers.service -sSl https://raw.githubusercontent.com/joshbav/lab-aws-template/master/install-kernel-headers.service
+sudo systemctl daemon-reload
+sudo systemctl enable install-kernel-headers.service
 
 echo
 echo INSTALLING DOCKER CE 18.09.1
