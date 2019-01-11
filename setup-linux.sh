@@ -10,8 +10,7 @@ echo YUM INSTALL OF ALL MY PACKAGES BUT DOCKER
 echo
 # Much of this is in a base CentOS & RHEL install, but not necessarily in a container
 sudo yum install -y epel-release yum-utils
-sudo yum install -y \ 
-ansible \
+sudo yum install -y ansible \
 autofs \
 bind-utils \ 
 bzip2 \
