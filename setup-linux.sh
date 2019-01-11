@@ -42,11 +42,11 @@ sudo systemctl start docker
 sudo usermod -aG docker centos 
 sudo docker run hello-world
 
-echo
-echo INSTALLING TERRAFORM 0.11.11
-echo
-curl -o /tmp/terraform_0.11.11_linux_amd64.zip -sSLO https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
-sudo unzip terraform_0.11.11_linux_amd64.zip -d /usr/bin
+#echo
+#echo INSTALLING TERRAFORM 0.11.11
+#echo
+#curl -o /tmp/terraform_0.11.11_linux_amd64.zip -sSLO https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
+#sudo unzip terraform_0.11.11_linux_amd64.zip -d /usr/bin
 
 
 #### yum clean all
