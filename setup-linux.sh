@@ -10,7 +10,7 @@ echo YUM INSTALL OF MY MAIN PACKAGES
 echo
 # Much of this is in a base CentOS & RHEL install, but not necessarily in a container
 sudo yum install -y epel-release yum-utils
-sudo yum install -y ansible autofs bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
+sudo yum install -y ansible autofs bash-completion bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
 
 echo
 echo INSTALLING DOCKER CE 18.09.1
@@ -36,6 +36,7 @@ repo_gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF'
 sudo yum install -y kubectl
+# NOTE autocompletion is not setup. https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion
 
 echo
 echo ADDING ALIASES TO /ETC/BASHRC
