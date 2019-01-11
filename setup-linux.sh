@@ -10,54 +10,7 @@ echo YUM INSTALL OF ALL MY PACKAGES BUT DOCKER
 echo
 # Much of this is in a base CentOS & RHEL install, but not necessarily in a container
 sudo yum install -y epel-release yum-utils
-sudo yum install -y ansible \
-autofs \
-bind-utils \ 
-bzip2 \
-ca-certificates \
-cpio \
-curl \
-device-mapper-persistent-data \
-diffutils \
-ethtool \
-expect \
-findutils \
-ftp \
-gawk \
-grep \
-gettext \
-git \
-gzip \
-hardlink \
-hostname \
-info \
-iproute \
-ipset \
-iputils \
-jq \
-less \
-lua \
-lvm2 \
-make \
-man \
-nano \
-net-tools \
-nfs-utils \
-nmap \
-openssh-clients \
-passwd \
-rsync \
-sed \
-sudo \
-tar \
-tcping \
-traceroute \
-unzip \
-util-linux \
-vim \
-wget \
-which \
-xz     
+sudo yum install -y ansible autofs bind-utils bzip2 ca-certificates cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname info iproute ipset iputils jq less lua lvm2 make man nano net-tools nfs-utils nmap openssh-clients passwd rsync sed sudo tar tcping traceroute unzip util-linux vim wget which xz     
 
 #### PYTHON 3.6
 #sudo yum install -y python36-setuptools
