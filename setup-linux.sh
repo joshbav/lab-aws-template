@@ -11,9 +11,15 @@ echo
 # Much of this is in a base CentOS & RHEL install, but not necessarily in a container
 sudo yum install -y epel-release yum-utils
 sudo yum install -y ansible autofs bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname info iproute ipset iputils jq less lua lvm2 make man nano net-tools nfs-utils nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
-
-# STRESS-NG
-#sudo yum install -y stress-ng
+echo
+echo INSTALLING DOCKER CE 18.09.1
+echo
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install -y docker-ce-18.09.1-3.el7 
+sudo systemctl enable docker 
+sudo systemctl start docker 
+sudo usermod -aG docker centos 
+sudo docker run hello-world
 
 #### PYTHON 3.6
 #sudo yum install -y python36-setuptools
@@ -34,16 +40,6 @@ sudo yum install -y ansible autofs bind-utils bzip2 ca-certificates coreutils cp
 ## note, use: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
 ## https://dzone.com/articles/running-a-jvm-in-a-container-without-getting-kille
 ####
-
-echo
-echo INSTALLING DOCKER CE 18.09.1
-echo
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo yum install -y docker-ce-18.09.1-3.el7 
-sudo systemctl enable docker 
-sudo systemctl start docker 
-sudo usermod -aG docker centos 
-sudo docker run hello-world
 
 #echo
 #echo INSTALLING TERRAFORM 0.11.11
