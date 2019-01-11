@@ -6,20 +6,41 @@ sudo echo LANGUAGE=en_US:en >> /etc/environment
 sudo echo LC_ALL=en_US.UTF-8 >> /etc/environment
 
 echo
-echo YUM INSTALL OF ALL MY PACKAGES BUT DOCKER
+echo YUM INSTALL OF MY MAIN PACKAGES
 echo
 # Much of this is in a base CentOS & RHEL install, but not necessarily in a container
 sudo yum install -y epel-release yum-utils
-sudo yum install -y ansible autofs bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname info iproute ipset iputils jq less lua lvm2 make man nano net-tools nfs-utils nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
+sudo yum install -y ansible autofs bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
+
 echo
 echo INSTALLING DOCKER CE 18.09.1
 echo
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+#older version: docker-ce-17.12.1.ce-1.el7.centos.x86_64
 sudo yum install -y docker-ce-18.09.1-3.el7 
 sudo systemctl enable docker 
 sudo systemctl start docker 
 sudo usermod -aG docker centos 
 sudo docker run hello-world
+
+echo
+echo INSTALLING KUBECTL
+echo
+sudo bash -c 'cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF'
+sudo yum install -y kubectl
+
+echo
+echo ADDING ALIASES TO /ETC/BASHRC
+echo
+sudo bash -c 'echo "alias s='systemctl' j='journalctl' k='kubectl'">>/etc/bashrc'
 
 #### PYTHON 3.6
 #sudo yum install -y python36-setuptools
