@@ -63,6 +63,7 @@ xz
 #### PYTHON 3.6
 #sudo yum install -y python36-setuptools
 ## note pip is already included python36-pip
+# This doesn't work outside of a container, not sure why
 #easy_install-3.6 pip
 #pip3 -v
 #pip3 install --upgrade pip
