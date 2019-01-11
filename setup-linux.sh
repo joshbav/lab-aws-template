@@ -45,7 +45,7 @@ nano \
 net-tools \
 nfs-utils \
 nmap \
-openssh-client \
+openssh-clients \
 passwd \
 rsync \
 sed \
