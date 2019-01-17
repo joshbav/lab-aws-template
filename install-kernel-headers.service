@@ -16,8 +16,9 @@ StandardOutput=journal+console
 StandardError=journal+console
 EnvironmentFile=
 # Note systemd starts executables as root by default, thus no use of sudo below
+# and full paths are required
 ExecStartPre=
-ExecStart=/usr/bin/bash -c "/usr/bin/yum install -y kernel-devel-$(uname -r)"
+ExecStart=/usr/bin/bash -c "/usr/bin/yum install -y kernel-headers"
 # Note ExecStopPost entries are ran regardless of the outcome of ExecStartPre and ExecStart commands
 ExecStopPost=
 

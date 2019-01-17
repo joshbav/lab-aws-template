@@ -8,10 +8,19 @@ sudo echo LC_ALL=en_US.UTF-8 >> /etc/environment
 echo
 echo YUM INSTALL OF MY MAIN PACKAGES
 echo
-# Much of this is in a base CentOS & RHEL install, but not necessarily in a container
+# Will be using chrony for NTP, ntp package may not even be installed
+sudo yum remove -y ntp
+sudo yum install -y chrony
+
 sudo yum install -y epel-release yum-utils deltarpm
 sudo yum update -y
+
+# Much of this is in a base CentOS & RHEL install, but not necessarily in a container
 sudo yum install -y ansible autofs bash-completion bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
+
+# INSTALL CHRONY CONFIG
+sudo curl -o /etc/chrony.conf -sSL https://raw.githubusercontent.com/joshbav/lab-aws-template/master/chrony.conf 
+# No need to restart chrony since a reboot will be done
 
 echo
 echo INSTALLING DOCKER CE 18.09.1
@@ -22,7 +31,6 @@ sudo yum install -y docker-ce-18.09.1-3.el7
 sudo systemctl enable docker 
 sudo systemctl start docker 
 sudo usermod -aG docker centos 
-sudo docker run hello-world
 
 echo
 echo INSTALLING KUBECTL
