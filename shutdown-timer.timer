@@ -1,11 +1,12 @@
 [Unit]
-Description=Shuts down linux after 6 hours, to limit our AWS bill
+Description=Shuts down linux after 6 hours, to limit our cloud bill for lab uses
 
 [Timer]
 # Time to wait after booting before we run first time
 OnBootSec=6h
 # Time between running each consecutive time, is necessary even though it won’t do anything
 OnUnitActiveSec=6h
+# What unit to run when the timer goes active
 Unit=shutdown-timer.service
 
 [Install]

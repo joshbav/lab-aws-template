@@ -1,26 +1,48 @@
 #! /bin/bash
 echo
 echo SETTING SOME ENV VARIABLES FOR ALL USERS
-sudo echo LANG=en_US.UTF-8 >> /etc/environment
-sudo echo LANGUAGE=en_US:en >> /etc/environment
-sudo echo LC_ALL=en_US.UTF-8 >> /etc/environment
+sudo bash -c "echo \"LANG=en_US.UTF-8\" >> /etc/environment"
+sudo bash -c "echo \"LANGUAGE=en_US:en\" >> /etc/environment"
+sudo bash -c "echo \"LC_ALL=en_US.UTF-8\" >> /etc/environment"
 
 echo
 echo YUM INSTALL OF MY MAIN PACKAGES
 echo
 # Will be using chrony for NTP, ntp package may not even be installed
+# Default NTP in AWS works fine, but this is useful for other environments
 sudo yum remove -y ntp
 sudo yum install -y chrony
-
-sudo yum install -y epel-release yum-utils deltarpm
-sudo yum update -y
-
-# Much of this is in a base CentOS & RHEL install, but not necessarily in a container
-sudo yum install -y ansible autofs bash-completion bind-utils bzip2 ca-certificates coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
 
 # INSTALL CHRONY CONFIG
 sudo curl -o /etc/chrony.conf -sSL https://raw.githubusercontent.com/joshbav/lab-aws-template/master/chrony.conf 
 # No need to restart chrony since a reboot will be done
+
+sudo yum install -y epel-release yum-utils deltarpm
+sudo yum update -y
+
+# Much of this is in a base CentOS & RHEL install, but not necessarily in a container,
+#  although I wouldn't necessarily install all of it in a container.
+sudo yum install -y ansible autofs bash-completion binutils bind-utils bzip2 ca-certificates centos-release coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
+
+echo
+echo INSTALLING ONESHOT SYSTEMD UNIT WHICH INSTALLS & UPDATES KERNEL HEADERS
+echo
+sudo cp install-kernel-headers.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable install-kernel-headers 
+# Not going to run it, because after reboot the new kernel will be loaded, and this will be ran
+
+echo
+echo INSTALLING 6 HOUR SYSTEMD TIMER TO SHUTDOWN SYSTEM, TO LIMIT OUR CLOUD SPEND
+echo IN THE CASE OF FORGETTING TO SHUT DOWN INSTANCES
+echo
+sudo cp shutdown-timer.timer /etc/systemd/system
+sudo cp shutdown-via-timer.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable shutdown-timer.timer
+sudo systemctl start shutdown-timer.timer
+sudo systemctl status shutdown-timer.timer
+
 
 echo
 echo INSTALLING DOCKER CE 18.09.1
@@ -50,7 +72,7 @@ sudo yum install -y kubectl
 echo
 echo ADDING ALIASES TO /ETC/BASHRC
 echo
-sudo bash -c 'echo "alias s='sudo systemctl' j='journalctl' k='kubectl'" >>/etc/bashrc'
+sudo bash -c "echo \"alias s='sudo systemctl' j='journalctl' k='kubectl'\" >>/etc/bashrc"
 
 #### PYTHON 3.6
 #sudo yum install -y python36-setuptools
