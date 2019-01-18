@@ -6,23 +6,25 @@ sudo bash -c "echo \"LANGUAGE=en_US:en\" >> /etc/environment"
 sudo bash -c "echo \"LC_ALL=en_US.UTF-8\" >> /etc/environment"
 
 echo
-echo YUM INSTALL OF MY MAIN PACKAGES
+echo IF NTPD IS INSTALLED, REMOVING IT. INSTALLING CHRONY AND A CONFIG FILE
 echo
 # Will be using chrony for NTP, ntp package may not even be installed
 # Default NTP in AWS works fine, but this is useful for other environments
 sudo yum remove -y ntp
 sudo yum install -y chrony
-
-# INSTALL CHRONY CONFIG
-sudo curl -o /etc/chrony.conf -sSL https://raw.githubusercontent.com/joshbav/lab-aws-template/master/chrony.conf 
+# Install chrony config file
+sudo cp chrony.conf /etc
 # No need to restart chrony since a reboot will be done
 
+echo
+echo YUM INSTALL OF MY MAIN PACKAGES
+echo
 sudo yum install -y epel-release yum-utils deltarpm
 sudo yum update -y
-
 # Much of this is in a base CentOS & RHEL install, but not necessarily in a container,
 #  although I wouldn't necessarily install all of it in a container.
 sudo yum install -y ansible autofs bash-completion binutils bind-utils bzip2 ca-certificates centos-release coreutils cpio curl device-mapper-persistent-data diffutils ethtool expect findutils ftp gawk grep gettext git gzip hardlink hostname iftop info iproute ipset iputils jq kubernetes-cli less lua lvm2 make man nano net-tools nfs-utils nload nmap openssh-clients passwd procps-ng rsync sed sudo sysstat tar tcping traceroute unzip util-linux vim wget which xz     
+echo
 
 echo
 echo INSTALLING ONESHOT SYSTEMD UNIT WHICH INSTALLS & UPDATES KERNEL HEADERS
@@ -42,7 +44,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable shutdown-timer.timer
 sudo systemctl start shutdown-timer.timer
 sudo systemctl status shutdown-timer.timer
-
+echo
 
 echo
 echo INSTALLING DOCKER CE 18.09.1
@@ -53,6 +55,8 @@ sudo yum install -y docker-ce-18.09.1-3.el7
 sudo systemctl enable docker 
 sudo systemctl start docker 
 sudo usermod -aG docker centos 
+sudo docker run hello-world
+echo
 
 echo
 echo INSTALLING KUBECTL
@@ -68,11 +72,13 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cl
 EOF'
 sudo yum install -y kubectl
 # NOTE autocompletion is not setup. https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion
+echo
 
 echo
 echo ADDING ALIASES TO /ETC/BASHRC
 echo
 sudo bash -c "echo \"alias s='sudo systemctl' j='journalctl' k='kubectl'\" >>/etc/bashrc"
+echo
 
 #### PYTHON 3.6
 #sudo yum install -y python36-setuptools
