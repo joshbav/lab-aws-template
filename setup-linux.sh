@@ -27,12 +27,19 @@ sudo yum install -y ansible autofs bash-completion binutils bind-utils bzip2 ca-
 echo
 
 echo
+echo ADDING ALIASES TO /ETC/BASHRC
+echo
+# These are just my personal preferences
+sudo bash -c "echo \"alias s='sudo systemctl' j='journalctl' k='kubectl'\" >>/etc/bashrc"
+echo
+
+echo
 echo INSTALLING ONESHOT SYSTEMD UNIT WHICH INSTALLS & UPDATES KERNEL HEADERS
 echo
 sudo cp install-kernel-headers.service /etc/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl enable install-kernel-headers 
-# Not going to run it, because after reboot the new kernel will be loaded, and this will be ran
+# Not going to run it, because after reboot the new kernel will be loaded then this will be ran
 
 echo
 echo INSTALLING 6 HOUR SYSTEMD TIMER TO SHUTDOWN SYSTEM, TO LIMIT OUR CLOUD SPEND
@@ -74,23 +81,21 @@ sudo yum install -y kubectl
 # NOTE autocompletion is not setup. https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion
 echo
 
-echo
-echo ADDING ALIASES TO /ETC/BASHRC
-echo
-sudo bash -c "echo \"alias s='sudo systemctl' j='journalctl' k='kubectl'\" >>/etc/bashrc"
-echo
-
 #### PYTHON 3.6
-#sudo yum install -y python36-setuptools
+#sudo yum install -y python36 python36-setuptools
 ## note pip is already included python36-pip
+# Note python2 is still installed, and this does not symlink to python36
 # This doesn't work outside of a container, not sure why
-#easy_install-3.6 pip
+# Note pip is built into python in 3.4 and later
+#sudo python36 -m ensurepip --default-pip
 #pip3 -v
-#pip3 install --upgrade pip
-#pip3 install virtualenv
+#sudo pip3 install --upgrade pip
+# Should not be necessary because of python36-setuptools
+#sudo pip3 install virtualenv
 ####
 
 #### JAVA 1.8
+# 1.11 = java-11-openjdk-headless
 # sudo yum install -y java-1.8.0-openjdk-headless
 # java -version
 ## Verify this is the right version
