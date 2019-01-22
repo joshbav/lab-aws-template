@@ -6,6 +6,7 @@
 #
 [Unit]
 Description=Installs & updates kernel headers automatically (by Sysdig)
+Documentation=
 Requires=network-online.target
 After=network-online.target
 Before=dragent.service
