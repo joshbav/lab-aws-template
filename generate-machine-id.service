@@ -1,0 +1,33 @@
+# Revision 1-11-19, tested on CentOS 7.5
+# This is a custom onshot (doesn't stay running) systemd unit that is ran on startup, 
+#  if /etc/machine-id doesn't already exist, it creates it. 
+# If it already exists it does nothing
+#
+[Unit]
+Description=Creates /etc/machine-id if it doesn't exist, useful for cloning images
+Documentation=
+Requires=local-fs.target
+After=local-fs.target
+Before=network.target
+Conflicts=shutdown.target
+ConditionPathIsReadWrite=/etc
+ConditionPathExists=!/etc/machine-id
+
+[Service]
+Type=oneshot
+# Don't keep unit running after the commands have been executed
+RemainAfterExit=false
+StandardOutput=journal+console
+StandardError=journal+console
+EnvironmentFile=
+# Note systemd starts executables as root by default, thus no use of sudo below,
+# and full paths are required
+ExecStartPre=
+# Not using systemd-machine-id-setup because it will recreate the same ID if a
+#  a reboot hasn't been done
+ExecStart=/usr/bin/bash -c "/usr/bin/systemd-firstboot --setup-machine-id"
+# Note ExecStopPost entries are ran regardless of the outcome of ExecStartPre and ExecStart commands
+ExecStopPost=
+
+[Install]
+WantedBy=multi-user.target
