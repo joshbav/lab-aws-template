@@ -35,7 +35,7 @@ sudo bash -c "echo \"LANGUAGE=en_US:en\" >> /etc/environment"
 sudo bash -c "echo \"LC_ALL=en_US.UTF-8\" >> /etc/environment"
 #ENV ENV LC_ALL en_US.UTF-8
 sudo bash -c "echo \"TERM=xterm-256color\" >> /etc/environment"
-ENV TERM xterm-256color
+#ENV TERM xterm-256color
 echo
 
 echo
@@ -172,11 +172,11 @@ echo
 echo
 echo DONE. THE FOLLOWING STEPS NEED TO BE PERFORMED:
 echo
-echo 1. Reboot. This will allow the kernel headers to be loaded by the service
-echo   that was added.
+echo 1. sudo reboot     This will allow the kernel headers to be loaded 
+echo    by the service that was added.
 echo 2. sudo rm -f /etc/machine-id
 echo 3. Shutdown
-echo 4. Take a snapshot.
+echo 4. Take a snapshot. Make AMI, etc.
 echo
 echo
 
