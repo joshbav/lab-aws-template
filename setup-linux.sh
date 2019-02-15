@@ -94,11 +94,11 @@ sudo systemctl status shutdown-timer.timer
 echo
 
 echo
-echo INSTALLING DOCKER CE 18.09.1
+echo INSTALLING DOCKER CE 18.09.2
 echo
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 #older version: docker-ce-17.12.1.ce-1.el7.centos.x86_64
-sudo yum install -y docker-ce-18.09.1-3.el7 
+sudo yum install -y docker-ce-18.09.2-3.el7
 sudo systemctl enable docker 
 sudo systemctl start docker 
 sudo usermod -aG docker centos 
