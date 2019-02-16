@@ -77,7 +77,7 @@ echo INSTALLING ONESHOT SYSTEMD UNIT WHICH INSTALLS & UPDATES KERNEL HEADERS
 echo
 sudo cp install-kernel-headers.rhel.service /etc/systemd/system/install-kernel-headers.service
 sudo systemctl daemon-reload
-sudo systemctl enable install-kernel-headers 
+sudo systemctl enable install-kernel-headers
 # Not going to run it, because after reboot the new kernel will be loaded then this will be ran
 echo
 
