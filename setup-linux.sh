@@ -26,6 +26,33 @@ echo
 ####
 
 echo
+echo DISABLING FIREWALLD (ignore service not found errors)
+echo
+# TODO: check if it exists then disable
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+
+echo
+echo SETTING SYSCTL SETTINGS IN /ETC/SYSCTL.CONF
+echo
+# TODO: check if it already exists, if so use sed
+echo   Setting: net.ipv4.ip_forward=1
+sudo echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+# K8s requires swapoff else kublet won't start, so this should not be
+# relevant
+sudo echo "vm.swappiness=10" >> /etc/sysctl.conf
+
+echo
+echo DISABLING SWAP FILE USAGE (K8S REQUIREMENT)
+echo
+sudo swapoff
+
+echo
+echo DISABLING SELINUX
+echo
+sudo setenforce 0
+
+echo
 echo SETTING SOME ENV VARIABLES FOR ALL USERS
 echo
 sudo bash -c "echo \"LANG=en_US.UTF-8\" >> /etc/environment"
