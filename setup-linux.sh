@@ -40,12 +40,12 @@ echo   Setting: net.ipv4.ip_forward=1
 sudo echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 # K8s requires swapoff else kublet won't start, so this should not be
 # relevant
-sudo echo "vm.swappiness=10" >> /etc/sysctl.conf
+# sudo echo "vm.swappiness=10" >> /etc/sysctl.conf
 
 echo
 echo DISABLING SWAP FILE USAGE (K8S REQUIREMENT)
 echo
-sudo swapoff
+sudo swapoff -a -v
 
 echo
 echo DISABLING SELINUX
