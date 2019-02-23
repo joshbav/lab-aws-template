@@ -1,5 +1,15 @@
 #! /bin/bash
 
+# TODO: %wheel  ALL=(ALL)       NOPASSWD: ALL
+
+echo
+echo DISABLING SELINUX
+echo
+# For a lab Kubernetes envioronment it makes things simpler
+sudo sed -i s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config
+# Disable it right now, just in case it interferes with other commands
+sudo setenforce disabled
+
 echo
 echo DELETING /ETC/MACHINE-ID, ADDING SYSTEMD UNIT TO REGENERATE IT ON REBOOT
 echo
@@ -33,12 +43,6 @@ echo
 # TODO: check if it exists then disable
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
-
-echo
-echo DISABLING SELINUX
-echo
-# For a lab Kubernetes envioronment it makes things simpler
-sudo sed -i s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config
 
 echo
 echo SETTING SYSCTL SETTINGS IN /ETC/SYSCTL.CONF
@@ -204,6 +208,9 @@ echo
 
 
 #### sudo rm -rf /var/cache/yum
+# Sice this script might be ran via EC2 userdata on an AMI at the same time K8s is installed.
+#   Again, this step really isn't that necessary. 
+sudo rm -f /etc/machine-id
 echo
 echo
 echo DONE. THE FOLLOWING STEPS NEED TO BE PERFORMED:
