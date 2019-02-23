@@ -3,9 +3,10 @@
 echo
 echo DELETING /ETC/MACHINE-ID, ADDING SYSTEMD UNIT TO REGENERATE IT ON REBOOT
 echo
+# NOTE: This really isn't necessary, I just do it anyhow.
 # Since this will be a base image, we'll delete this file so it'll be recreated
 #  when the first reboot happens, which should be in an instance booting from 
-#  a copy of this image
+#  a clone of this image
 # Not going to delete it now since we will reboot to install kernel headers
 # then delete the file then, then take a snapshot  # sudo rm -f /etc/machine-id
 sudo cp generate-machine-id.service /etc/systemd/system
@@ -28,13 +29,21 @@ echo
 echo
 echo DISABLING FIREWALLD (ignore service not found errors)
 echo
+# Required for Kubernetes
 # TODO: check if it exists then disable
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
 
 echo
+echo DISABLING SELINUX
+echo
+# For a lab Kubernetes envioronment it makes things simpler
+sudo sed -i s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config
+
+echo
 echo SETTING SYSCTL SETTINGS IN /ETC/SYSCTL.CONF
 echo
+# Required for Kubernetes
 # TODO: check if it already exists, if so use sed
 echo   Setting: net.ipv4.ip_forward=1
 sudo echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
@@ -45,12 +54,8 @@ sudo echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 echo
 echo DISABLING SWAP FILE USAGE (K8S REQUIREMENT)
 echo
+# Required for Kubernetes
 sudo swapoff -a -v
-
-echo
-echo DISABLING SELINUX
-echo
-sudo setenforce 0
 
 echo
 echo SETTING SOME ENV VARIABLES FOR ALL USERS
@@ -90,6 +95,7 @@ echo
 echo
 echo IF NTPD IS INSTALLED, REMOVING IT. INSTALLING CHRONY AND A CONFIG FILE
 echo
+# Required by Kubernetes and Sysdig
 # We'll be using chrony for NTP, ntpd package may not even be installed
 # Default NTP in AWS works fine, but this is useful for other environments
 sudo yum remove -y ntp > /dev/null 2>&1
@@ -102,6 +108,7 @@ echo
 echo
 echo INSTALLING ONESHOT SYSTEMD UNIT WHICH INSTALLS & UPDATES KERNEL HEADERS
 echo
+# Sometimes required by Sysdig
 sudo cp install-kernel-headers.rhel.service /etc/systemd/system/install-kernel-headers.service
 sudo systemctl daemon-reload
 sudo systemctl enable install-kernel-headers
@@ -110,7 +117,7 @@ echo
 
 echo
 echo INSTALLING 6 HOUR SYSTEMD TIMER TO SHUTDOWN SYSTEM, TO LIMIT OUR CLOUD SPEND
-echo IN THE CASE OF FORGETTING TO SHUT DOWN INSTANCES
+echo   IN THE CASE OF FORGETTING TO SHUT DOWN INSTANCES
 echo
 sudo cp shutdown-timer.timer /etc/systemd/system
 sudo cp shutdown-via-timer.service /etc/systemd/system
@@ -123,6 +130,7 @@ echo
 echo
 echo INSTALLING DOCKER CE 18.09.2
 echo
+# Obviously required by Kubernetes
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 #older version: docker-ce-17.12.1.ce-1.el7.centos.x86_64
 sudo yum install -y docker-ce-18.09.2-3.el7
@@ -159,6 +167,7 @@ echo
 echo
 echo SETTIG TIMEZONE TO BE UTC
 echo
+# Not required, I just have a habit of doing this
 # In AWS this is the default for CentOS, but since we might not be using AWS we'll do it here
 # Don't use this in a container
 sudo timedatectl set-timezone UTC
@@ -203,7 +212,7 @@ echo 1. sudo reboot     This will allow the kernel headers to be loaded
 echo    by the service that was added.
 echo 2. sudo rm -f /etc/machine-id
 echo 3. Shutdown
-echo 4. Take a snapshot. Make AMI, etc.
+echo 4. Take a snapshot and make AMI, etc.
 echo
 echo
 
