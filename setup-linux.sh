@@ -56,7 +56,7 @@ sudo bash -c "echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf"
 # sudo echo "vm.swappiness=10" >> /etc/sysctl.conf
 
 echo
-echo DISABLING SWAP FILE USAGE (K8S REQUIREMENT)
+echo "DISABLING SWAP FILE USAGE (K8S REQUIREMENT)"
 echo
 # Required for Kubernetes
 sudo swapoff -a -v
