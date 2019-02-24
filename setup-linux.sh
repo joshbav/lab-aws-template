@@ -8,7 +8,7 @@ echo
 # For a lab Kubernetes envioronment it makes things simpler
 sudo sed -i s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config
 # Disable it right now, just in case it interferes with other commands
-sudo setenforce disabled
+sudo setenforce 0
 
 echo
 echo DELETING /ETC/MACHINE-ID, ADDING SYSTEMD UNIT TO REGENERATE IT ON REBOOT
@@ -37,7 +37,7 @@ echo
 ####
 
 echo
-echo DISABLING FIREWALLD (ignore service not found errors)
+echo "DISABLING FIREWALLD (ignore service not found errors)"
 echo
 # Required for Kubernetes
 # TODO: check if it exists then disable
@@ -50,7 +50,7 @@ echo
 # Required for Kubernetes
 # TODO: check if it already exists, if so use sed
 echo   Setting: net.ipv4.ip_forward=1
-sudo echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+sudo bash -c "echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf"
 # K8s requires swapoff else kublet won't start, so this should not be
 # relevant
 # sudo echo "vm.swappiness=10" >> /etc/sysctl.conf
